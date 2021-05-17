@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 public class GuiAgenda extends Application {
 	private AgendaContactos agenda;
+	
 	private MenuItem itemImportar;
 	private MenuItem itemExportarPersonales;
 	private MenuItem itemSalir;
@@ -40,6 +41,10 @@ public class GuiAgenda extends Application {
 
 	private Button btnClear;
 	private Button btnSalir;
+	
+	private char[] abecedario = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ,'I', 
+			 					 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q',
+			 					 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z'};
 
 	@Override
 	public void start(Stage stage) {
@@ -50,8 +55,7 @@ public class GuiAgenda extends Application {
 		Scene scene = new Scene(root, 1100, 700);
 		stage.setScene(scene);
 		stage.setTitle("Agenda de contactos");
-		scene.getStylesheets().add(getClass().getResource("/application.css")
-		                    .toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 		stage.show();
 
 	}
@@ -77,9 +81,9 @@ public class GuiAgenda extends Application {
 	}
 
 	private VBox crearPanelBotones() {
-		// a completar
 		VBox panel = new VBox();
-
+		panel.getChildren().add(areaTexto);
+		
 		return panel;
 	}
 
