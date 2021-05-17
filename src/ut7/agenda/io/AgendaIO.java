@@ -28,22 +28,18 @@ public class AgendaIO {
 	 */
 	public static int importar(AgendaContactos agenda, String ruta) {
 		int contador = 0;
-		try {
-			Scanner sc = new Scanner(new File(ruta));
-			while (sc.hasNextLine()) {
+		Scanner sc = new Scanner(AgendaIO.class.getClassLoader().getResourceAsStream(ruta));
+		while (sc.hasNextLine()) {
 
-				try {
-					agenda.añadirContacto(parsearLinea(sc.nextLine()));
-				} catch (NumberFormatException nfe) {
-					contador++;
-					System.out.println("Error al parsear un contacto");
-				} catch (IllegalArgumentException iae) {
-					contador++;
-					System.out.println("Error al parsear un contacto");
-				}
+			try {
+				agenda.añadirContacto(parsearLinea(sc.nextLine()));
+			} catch (NumberFormatException nfe) {
+				contador++;
+				System.out.println("Error al parsear un contacto");
+			} catch (IllegalArgumentException iae) {
+				contador++;
+				System.out.println("Error al parsear un contacto");
 			}
-		} catch (FileNotFoundException fnf) {
-			System.out.println("La ruta especificada no es valida");
 		}
 		return contador;
 
