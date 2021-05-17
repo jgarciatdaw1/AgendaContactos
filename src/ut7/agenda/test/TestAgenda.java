@@ -10,7 +10,6 @@ import ut7.agenda.modelo.Personal;
 import ut7.agenda.modelo.Relacion;
 
 public class TestAgenda {
-/*jhhh*/
 	public static void main(String[] args) {
 		AgendaContactos agenda = new AgendaContactos();
 		System.out.println(AgendaIO.importar(agenda, "agenda.csv") + " líneas erroneas");
