@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -18,7 +19,6 @@ import javafx.stage.Stage;
 
 public class GuiAgenda extends Application {
 	private AgendaContactos agenda;
-	
 	private MenuItem itemImportar;
 	private MenuItem itemExportarPersonales;
 	private MenuItem itemSalir;
@@ -43,8 +43,8 @@ public class GuiAgenda extends Application {
 	private Button btnSalir;
 	
 	private char[] abecedario = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ,'I', 
-			 					 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q',
-			 					 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z'};
+					             'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q',
+					             'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z'};
 
 	@Override
 	public void start(Stage stage) {
@@ -55,7 +55,8 @@ public class GuiAgenda extends Application {
 		Scene scene = new Scene(root, 1100, 700);
 		stage.setScene(scene);
 		stage.setTitle("Agenda de contactos");
-		scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/application.css")
+		                    .toExternalForm());
 		stage.show();
 
 	}
@@ -81,9 +82,9 @@ public class GuiAgenda extends Application {
 	}
 
 	private VBox crearPanelBotones() {
+		// a completar
 		VBox panel = new VBox();
-		panel.getChildren().add(areaTexto);
-		
+
 		return panel;
 	}
 
@@ -95,9 +96,17 @@ public class GuiAgenda extends Application {
 	}
 
 	private MenuBar crearBarraMenu() {
-		// a completar
 		MenuBar barra = new MenuBar();
-
+		Menu menu1 = new Menu("Archivo");
+		Menu menu2 = new Menu("Operaciones");
+		Menu menu3 = new Menu("Help");
+		
+		barra.getMenus().addAll(menu1, menu2, menu3);
+		
+		menu1.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
+		menu2.getItems().addAll(itemBuscar, itemFelicitar);
+		menu3.getItems().addAll(itemAbout);
+		
 		return barra;
 	}
 
