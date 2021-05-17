@@ -36,8 +36,10 @@ public class AgendaIO {
 					agenda.añadirContacto(parsearLinea(sc.nextLine()));
 				} catch (NumberFormatException nfe) {
 					contador++;
+					System.out.println("Error al parsear un contacto");
 				} catch (IllegalArgumentException iae) {
 					contador++;
+					System.out.println("Error al parsear un contacto");
 				}
 			}
 		} catch (FileNotFoundException fnf) {
@@ -89,7 +91,7 @@ public class AgendaIO {
 			}
 
 		} catch (IOException e) {
-
+			System.out.println("No se ha podido leer el fichero");
 		} finally {
 			try {
 				fw.close();
