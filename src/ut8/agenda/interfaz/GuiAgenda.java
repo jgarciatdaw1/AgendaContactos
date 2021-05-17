@@ -131,6 +131,7 @@ public class GuiAgenda extends Application {
 
 	private void personalesOrdenadosPorFecha() {
 		clear();
+		this.btnPersonalesOrdenadosPorFecha = new Button("Contactos personales ordenados por fecha");
 		// a completar
 
 	}
