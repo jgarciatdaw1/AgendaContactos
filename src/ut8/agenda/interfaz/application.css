@@ -1,62 +1,56 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 .botones {
-	-fx-background-color: rgb(222,193,180);
-	-fx-border-color:  rgb(128,128,128);
-    -fx-border-radius:  4px;
+	-fx-background-color: rgb(222.0,193.0,180.0);
+	-fx-border-color:  rgb(128.0,128.0,128.0);
+    -fx-border-radius:  4.0px;
     -fx-font-family: "Pt Sans";
-    -fx-font-size: 14px;
+    -fx-font-size: 14.0px;
     -fx-text-fill:  blue;
 }
+
 .text-area {
 	-fx-border-color:  blue;
 	-fx-font-family: monospace;
 	-fx-font-weight: bold;
-	
-	 
-	 
 }
+
 .text-area .content {
     -fx-background-color:  #f6f5f5;
-    
 }
 
 .botonletra {
 	-fx-font-family: "Pt Sans";
-    -fx-font-size: 18px;
-    -fx-text-fill:  darkgrey ;
+    -fx-font-size: 18.0px;
+    -fx-text-fill: darkgrey;
     -fx-font-weight: bold;
-     
-    
-	
 }
 
 .text-field {
     -fx-background-color: #b4dec1;
-	-fx-border-color:   grey;
-    -fx-border-radius:  4px;
+	-fx-border-color: grey;
+    -fx-border-radius: 4.0px;
     
 }
 
 .radio-button {
 	-fx-font-family: "Pt Sans";
-    -fx-font-size: 14px;
-    -fx-text-fill:  blue;
-	
+    -fx-font-size: 14.0px;
+    -fx-text-fill: blue;
 }
 
 .text-field:focused {
-    -fx-background-color: -fx-focus-color, -fx-background ;
+	-fx-background-color: -fx-focus-color, -fx-background;
 }
 
 .dialog-pane{
   -fx-background-color: #2c5545;
-  -fx-font-size:44px;
+  -fx-font-size:44.0px;
   -fx-border-width:2.0px;
 }
 
 .dialog-pane .label {
   
-  -fx-background-radius:10px;
+  -fx-background-radius:10.0px;
   -fx-text-fill:white;
   -fx-font-family: 'Brush Script MT';
   
@@ -64,12 +58,12 @@
 
 .dialog-pane .button{
    -fx-background-color: #82a1b1;
-   -fx-font-size:16px;
+   -fx-font-size:16.0px;
  
  }
 
 .dialog-pane .button:hover{     
-  -fx-background-color:rgb(222,193,180);
+  -fx-background-color:rgb(222.0,193.0,180.0);
   -fx-text-fill:black;
  
  }
