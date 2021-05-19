@@ -1,10 +1,14 @@
 package ut8.agenda.interfaz;
 
+import java.util.Date;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -41,10 +45,9 @@ public class GuiAgenda extends Application {
 
 	private Button btnClear;
 	private Button btnSalir;
-	
-	private char[] abecedario = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ,'I', 
-					             'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q',
-					             'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z'};
+
+	private char[] abecedario = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
+			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
 
 	@Override
 	public void start(Stage stage) {
@@ -69,72 +72,77 @@ public class GuiAgenda extends Application {
 
 	private BorderPane crearPanelPrincipal() {
 		BorderPane panel = new BorderPane();
-		
+
 		panel.setPadding(new Insets(10));
-		
+
 		areaTexto = new TextArea();
 		areaTexto.getStyleClass().add("textarea");
-		
+
 		panel.setTop(crearPanelLetras());
 		panel.setCenter(areaTexto);
 		panel.setLeft(crearPanelBotones());
-		
-		
+
 		return panel;
 	}
 
 	private VBox crearPanelBotones() {
 		VBox panel = new VBox(10);
-		
+
 		txtBuscar = new TextField();
 		txtBuscar.setPromptText("Buscar");
 		txtBuscar.setMinHeight(40);
 		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
 		txtBuscar.getStyleClass().add("text-field");
-		
+
 		ToggleGroup group = new ToggleGroup();
-		
+
 		rbtListarTodo = new RadioButton("Listar toda la agenda");
 		rbtListarTodo.setToggleGroup(group);
 		rbtListarTodo.setSelected(true);
 		rbtListarTodo.getStyleClass().add("radio-button");
-		
+
 		rbtListarSoloNumero = new RadioButton("Listar nº contactos");
 		rbtListarSoloNumero.setToggleGroup(group);
 		rbtListarSoloNumero.getStyleClass().add("radio-button");
-		
-		int prefWidth = 250; 
-		
+
+		int prefWidth = 250;
+
 		btnListar = new Button("Listar");
 		btnListar.setOnAction(e -> listar());
 		btnListar.getStyleClass().add("botones");
 		btnListar.setPrefWidth(prefWidth);
 		VBox.setMargin(btnListar, new Insets(0, 0, 40, 0));
-		
+
 		btnPersonalesEnLetra = new Button("Contactos personales en letra");
 		btnPersonalesEnLetra.getStyleClass().add("botones");
 		btnPersonalesEnLetra.setPrefWidth(prefWidth);
-		
+
 		btnPersonalesOrdenadosPorFecha = new Button("Contactos personales\nordenados por fecha");
 		btnPersonalesOrdenadosPorFecha.getStyleClass().add("botones");
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(prefWidth);
+
+		
+		// CAMBIAR JON
+		btnPersonalesOrdenadosPorFecha.setOnMouseClicked(e -> personalesOrdenadosPorFecha());
+		btnPersonalesEnLetra.setOnMouseClicked(f -> contactosPersonalesEnLetra());
+		btnListar.setOnMouseClicked(g -> listar());
+
 		
 		btnClear = new Button("Clear");
 		btnClear.setOnAction(e -> clear());
 		btnClear.getStyleClass().add("botones");
 		btnClear.setPrefWidth(prefWidth);
 		VBox.setMargin(btnClear, new Insets(40, 0, 0, 0));
-		
+
 		btnSalir = new Button("Salir");
 		btnSalir.setOnAction(e -> salir());
 		btnSalir.getStyleClass().add("botones");
 		btnSalir.setPrefWidth(prefWidth);
-		
+
 		panel.setPadding(new Insets(10));
-		
-		
-		panel.getChildren().addAll(txtBuscar, rbtListarTodo, rbtListarSoloNumero, btnListar,
-								   btnPersonalesEnLetra, btnPersonalesOrdenadosPorFecha, btnClear, btnSalir);
+
+		panel.getChildren().addAll(txtBuscar, rbtListarTodo, rbtListarSoloNumero, btnListar, btnPersonalesEnLetra,
+				btnPersonalesOrdenadosPorFecha, btnClear, btnSalir);
 
 		return panel;
 	}
@@ -148,15 +156,16 @@ public class GuiAgenda extends Application {
 
 	private MenuBar crearBarraMenu() {
 		MenuBar barra = new MenuBar();
-		/*Menu menu1 = new Menu("Archivo");
-		Menu menu2 = new Menu("Operaciones");
-		Menu menu3 = new Menu("Help");
-		
-		barra.getMenus().addAll(menu1, menu2, menu3);
-		
-		menu1.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
-		menu2.getItems().addAll(itemBuscar, itemFelicitar);
-		menu3.getItems().addAll(itemAbout);*/
+		/*
+		 * Menu menu1 = new Menu("Archivo"); Menu menu2 = new Menu("Operaciones"); Menu
+		 * menu3 = new Menu("Help");
+		 * 
+		 * barra.getMenus().addAll(menu1, menu2, menu3);
+		 * 
+		 * menu1.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
+		 * menu2.getItems().addAll(itemBuscar, itemFelicitar);
+		 * menu3.getItems().addAll(itemAbout);
+		 */
 		
 		return barra;
 	}
@@ -182,7 +191,35 @@ public class GuiAgenda extends Application {
 
 	private void personalesOrdenadosPorFecha() {
 		clear();
+
+		// CAMBIAR NAIARA
+		itemImportar = new MenuItem();
+
 		
+		
+		ChoiceDialog<String> cd = new ChoiceDialog(abecedario[0], abecedario);
+
+		if (!itemImportar.isDisable()) {
+			areaTexto.appendText("Importa primero la agenda.");
+
+		} else {
+			cd.setTitle("Selector de letra");
+			cd.setHeaderText(null);
+			cd.setContentText("Eliga la opcion: ");
+			
+			Optional<String> resultado = cd.showAndWait();
+			
+			if (resultado.isPresent()) {
+				String opcionElegida = resultado.get();
+				char opcion = opcionElegida.charAt(0);
+				agenda.personalesOrdenadosPorFechaNacimiento(opcion);
+				cd.close();
+				
+			} else if (!resultado.isPresent()) {
+				areaTexto.appendText("La letra no esta en la agenda o no hay contactos personales en ella.");
+				cd.close();
+			}
+		}
 		// a completar
 
 	}
@@ -190,18 +227,80 @@ public class GuiAgenda extends Application {
 	private void contactosPersonalesEnLetra() {
 		clear();
 		// a completar
+		
+		itemImportar = new MenuItem();
+		
+		ChoiceDialog<String> c = new ChoiceDialog(abecedario[0], abecedario);
 
+		if (!itemImportar.isDisable()) {
+			areaTexto.appendText("Importa primero la agenda.");
+
+		} else {
+			c.setTitle("Selector de letra");
+			c.setHeaderText(null);
+			c.setContentText("Eliga la opcion: ");
+
+			Optional<String> resultado = c.showAndWait();
+
+			if (resultado.isPresent()) {
+				String opcionElegida = resultado.get();
+				char opcion = opcionElegida.charAt(0);
+				areaTexto.appendText(agenda.personalesEnLetra(opcion).toString());
+				c.close();
+			}
+			else{
+				areaTexto.appendText("La letra no esta en la agenda.");
+				c.close();
+			}
+		}
 	}
 
 	private void contactosEnLetra(char letra) {
 		clear();
 		// a completar
+		itemImportar = new MenuItem();
+		
+		ChoiceDialog<String> cd = new ChoiceDialog(abecedario[0], abecedario);
+
+		if (!itemImportar.isDisable()) {
+			areaTexto.appendText("Importa primero la agenda.");
+
+		} else {
+			cd.setTitle("Selector de letra");
+			cd.setHeaderText(null);
+			cd.setContentText("Eliga la opcion: ");
+
+			Optional<String> resultado = cd.showAndWait();
+
+			if (resultado.isPresent()) {
+				String opcionElegida = resultado.get();
+				char opcion = opcionElegida.charAt(0);
+				areaTexto.appendText(agenda.contactosEnLetra(opcion).toString());
+				cd.close();
+			}
+
+			else if (!resultado.isPresent()) {
+				areaTexto.appendText("La letra no esta en la agenda.");
+				cd.close();
+			}
+		}
 	}
 
 	private void felicitar() {
 		clear();
 		// a completar
-
+		itemImportar = new MenuItem();
+		
+		if(!itemImportar.isDisable()) {
+			areaTexto.appendText("Importa primero la agenda.");
+		}
+		
+		else {
+			Date fecha = new Date();
+			areaTexto.appendText("Hoy es el " + fecha.getDay() + " de " + fecha.getMonth() + " del " + fecha.getYear());
+			areaTexto.appendText(agenda.felicitar().toString());
+		}
+		
 	}
 
 	private void buscar() {
