@@ -207,7 +207,6 @@ public class GuiAgenda extends Application {
 	}
 
 	private void importarAgenda() {
-		// a completar
 		Stage s = new Stage();
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Abrir fichero csv");
@@ -215,14 +214,16 @@ public class GuiAgenda extends Application {
 		int errores = AgendaIO.importar(agenda, f.getPath());
 		areaTexto.appendText("No se han podido importar " + errores + " contactos.");
 		
-		//Al final deshabilitar importar y activar exportar
 		itemImportar.setDisable(true);
 		itemExportarPersonales.setDisable(false);
 	}
 
 	private void exportarPersonales() {
-		// a completar
-		
+		Stage s = new Stage();
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Exportar datos personales");
+		File f = fc.showSaveDialog(s);
+		AgendaIO.exportarPersonales(agenda, f.getPath());
 	}
 
 	/**
