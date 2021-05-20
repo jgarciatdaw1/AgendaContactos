@@ -108,7 +108,7 @@ public class AgendaContactos {
 		return devuelve;
 	}
 
-	//Metodo privado creado para la interfaz para ver si existen contactos con esa letra. FALTA COMENTAR BIEN.
+	//Metodo privado creado para la interfaz para ver si existen contactos con esa letra.
 	public boolean contieneLetra(Character c) {
 		if(agenda.containsKey(c)) {
 			return true;

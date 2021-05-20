@@ -3,7 +3,9 @@ package ut8.agenda.interfaz;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -27,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import ut7.agenda.io.AgendaIO;
 import ut7.agenda.modelo.AgendaContactos;
+import ut7.agenda.modelo.Contacto;
 import ut7.agenda.modelo.Personal;
 
 public class GuiAgenda extends Application {
@@ -130,14 +133,11 @@ public class GuiAgenda extends Application {
 		btnPersonalesOrdenadosPorFecha.getStyleClass().add("botones");
 		btnPersonalesOrdenadosPorFecha.setPrefWidth(prefWidth);
 
-		
-		// CAMBIAR JON
 		btnPersonalesOrdenadosPorFecha.setOnMouseClicked(e -> personalesOrdenadosPorFecha());
 		btnPersonalesEnLetra.setOnMouseClicked(f -> contactosPersonalesEnLetra());
 		btnListar.setOnMouseClicked(g -> listar());
 		itemFelicitar.setOnAction(h -> felicitar());
-		
-		
+
 		btnClear = new Button("Clear");
 		btnClear.setOnAction(e -> clear());
 		btnClear.getStyleClass().add("botones");
@@ -166,26 +166,25 @@ public class GuiAgenda extends Application {
 
 	private MenuBar crearBarraMenu() {
 		MenuBar barra = new MenuBar();
-		
+
 		Menu archivo = new Menu();
 		archivo.setText("Archivo");
 		itemFelicitar = new MenuItem();
-		
+
 		itemImportar = new MenuItem("Importar agenda");
 		itemImportar.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
 		itemImportar.setOnAction(e -> importarAgenda());
-		
+
 		itemExportarPersonales = new MenuItem("Exportar Personales");
 		itemExportarPersonales.setDisable(true);
 		itemExportarPersonales.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
 		itemExportarPersonales.setOnAction(f -> exportarPersonales());
-		
+
 		itemSalir = new MenuItem("Salir");
 		itemSalir.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
 		itemSalir.setOnAction(g -> salir());
 		archivo.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
-		
-		
+
 		Menu operaciones = new Menu();
 		operaciones.setText("Operaciones");
 		itemBuscar = new MenuItem("Buscar");
@@ -195,17 +194,16 @@ public class GuiAgenda extends Application {
 		itemFelicitar.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
 		itemFelicitar.setOnAction(a -> felicitar());
 		operaciones.getItems().addAll(itemBuscar, itemFelicitar);
-		
-		
+
 		Menu help = new Menu();
 		help.setText("Help");
 		itemAbout = new MenuItem("About");
 		itemAbout.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
 		itemAbout.setOnAction(h -> about());
 		help.getItems().add(itemAbout);
-		
+
 		barra.getMenus().addAll(archivo, operaciones, help);
-		
+
 		return barra;
 	}
 
@@ -216,7 +214,7 @@ public class GuiAgenda extends Application {
 		File f = fc.showOpenDialog(s);
 		int errores = AgendaIO.importar(agenda, f.getPath());
 		areaTexto.appendText("No se han podido importar " + errores + " contactos.");
-		
+
 		itemImportar.setDisable(true);
 		itemExportarPersonales.setDisable(false);
 	}
@@ -242,7 +240,7 @@ public class GuiAgenda extends Application {
 		clear();
 		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
 				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
-		
+
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 
@@ -251,36 +249,37 @@ public class GuiAgenda extends Application {
 			cd.setTitle("Selector de letra");
 			cd.setHeaderText(null);
 			cd.setContentText("Eliga la opcion: ");
-			
+
 			Optional<Character> resultado = cd.showAndWait();
-			
+
 			if (resultado.isPresent()) {
 				Character opcionElegida = resultado.get();
-				if(agenda.contieneLetra(opcionElegida)) {
-					if(agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida).isEmpty()) {
-						areaTexto.setText("No hay contactos.");
-					}else {
-						for(Personal p :agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida)) {
+				if (agenda.contieneLetra(opcionElegida)) {
+					List<Personal> lista = agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida);
+					if (lista.isEmpty()) {
+						areaTexto.setText("No hay contactos personales.");
+					} else {
+						areaTexto.appendText("Contactos personales ordenados por la fecha de nacimiento \n\n"
+								+ opcionElegida + "\n\n");
+						for (Personal p : lista) {
 							areaTexto.appendText(p.toString() + "\n");
 						}
 					}
 					cd.close();
+				} else {
+					areaTexto.setText("No hay contactos personales.");
 				}
-				else {
-						areaTexto.setText("No existe ningun personal con esa letra.");
-					}
-				}
+			}
 		}
 
 	}
 
 	private void contactosPersonalesEnLetra() {
 		clear();
-		// a completar
-		
+
 		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
 				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
-		
+
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 
@@ -289,27 +288,34 @@ public class GuiAgenda extends Application {
 			c.setTitle("Selector de letra");
 			c.setHeaderText(null);
 			c.setContentText("Eliga la opcion: ");
-			
-			Optional<Character> resultado = c.showAndWait();
 
+			Optional<Character> resultado = c.showAndWait();
+			Character opcionElegida = resultado.get();
 			if (resultado.isPresent()) {
-				Character opcionElegida = resultado.get();
-				if(agenda.contieneLetra(opcionElegida)) {
-						areaTexto.appendText(agenda.personalesEnLetra(opcionElegida).toString());
-						c.close();
-				}
-				else {
-					areaTexto.setText("No hay ningun contacto con esta letra.");
+				if (agenda.contieneLetra(opcionElegida)) {
+					List<Personal> lista = agenda.personalesEnLetra(opcionElegida);
+					if (lista.isEmpty()) {
+						areaTexto.setText("La letra " + opcionElegida + " no esta en la agenda.");
+					} else {
+						areaTexto.appendText("Contactos personales en la letra " + opcionElegida + " (" + lista.size()
+								+ " contacto/s) \n\n");
+						for (Personal p : lista) {
+							areaTexto.appendText(p.toString() + "\n");
+						}
+					}
+					c.close();
+				} else {
+					areaTexto.setText("La letra " + opcionElegida + " no esta en la agenda.");
 					c.close();
 				}
-				
+
 			}
 		}
 	}
 
 	private void contactosEnLetra(char letra) {
 		clear();
-		
+
 		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
 				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
 
@@ -317,23 +323,32 @@ public class GuiAgenda extends Application {
 			areaTexto.appendText("Importa primero la agenda.");
 
 		} else {
-			
+
 			ChoiceDialog<Character> cd = new ChoiceDialog(abecedario3[0], abecedario3);
 			cd.setTitle("Selector de letra");
 			cd.setHeaderText(null);
 			cd.setContentText("Eliga la opcion: ");
 
 			Optional<Character> resultado = cd.showAndWait();
-			
+
 			if (resultado.isPresent()) {
 				Character opcionElegida = resultado.get();
-				if(agenda.contieneLetra(opcionElegida)) {
-					areaTexto.appendText(agenda.contactosEnLetra(opcionElegida).toString());
+				if (agenda.contieneLetra(opcionElegida)) {
+					Set<Contacto> lista = agenda.contactosEnLetra(opcionElegida);
+					if (lista.isEmpty()) {
+						areaTexto.setText("Contactos en la letra " + opcionElegida + " \n\n\nNo hay contactos.");
+					} else {
+						areaTexto.appendText(
+								"Contactos en la letra " + opcionElegida + " (" + lista.size() + " contacto/s) \n\n");
+						for (Contacto c : lista) {
+							areaTexto.appendText(c.toString() + "\n");
+						}
+					}
 					cd.close();
 				}
-				
+
 				else {
-					areaTexto.setText("No existe ningun contacto con esta letra");
+					areaTexto.setText("Contactos en la letra " + opcionElegida + " \n\\n\\nNo hay contactos.");
 				}
 			}
 		}
@@ -341,38 +356,38 @@ public class GuiAgenda extends Application {
 
 	private void felicitar() {
 		clear();
-		
-		if(!itemImportar.isDisable()) {
+
+		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 		}
-		
+
 		else {
 			LocalDate lc = LocalDate.now();
-			areaTexto.appendText("Hoy es el " + lc.getDayOfMonth() + " del " + lc.getMonthValue() + " de " + lc.getYear() + "\n");
-			
-			if(!agenda.felicitar().isEmpty()) {
+			areaTexto.appendText(
+					"Hoy es el " + lc.getDayOfMonth() + " del " + lc.getMonthValue() + " de " + lc.getYear() + "\n");
+
+			if (!agenda.felicitar().isEmpty()) {
 				areaTexto.appendText(agenda.felicitar().toString());
-			}
-			else {
+			} else {
 				areaTexto.appendText("Hoy no cumple años ningun contacto.");
 			}
 		}
-		
+
 	}
 
 	private void buscar() {
 		clear();
-		
+
 		String texto = txtBuscar.getText();
-		
-		if(agenda.buscarContactos(texto).isEmpty()) {
+
+		if (agenda.buscarContactos(texto).isEmpty()) {
 			areaTexto.appendText("No existe el contacto que buscas.");
-		}else if(texto.equals("")) {
+		} else if (texto.equals("")) {
 			areaTexto.setText("No has introduciodo nada para buscar.");
-		}else if(!agenda.buscarContactos(texto).isEmpty()){
+		} else if (!agenda.buscarContactos(texto).isEmpty()) {
 			areaTexto.appendText(agenda.buscarContactos(texto).toString());
 		}
-		
+
 		cogerFoco();
 	}
 
