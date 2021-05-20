@@ -237,31 +237,31 @@ public class GuiAgenda extends Application {
 
 	private void personalesOrdenadosPorFecha() {
 		clear();
-
-		ChoiceDialog<String> cd = new ChoiceDialog("A", abecedario);
-
+		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
+				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
+		
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 
 		} else {
+			ChoiceDialog<Character> cd = new ChoiceDialog(abecedario3[0], abecedario3);
 			cd.setTitle("Selector de letra");
 			cd.setHeaderText(null);
 			cd.setContentText("Eliga la opcion: ");
 			
-			Optional<String> resultado = cd.showAndWait();
+			Optional<Character> resultado = cd.showAndWait();
 			
 			if (resultado.isPresent()) {
-				String opcionElegida = resultado.get();
-				char opcion = opcionElegida.charAt(0);
-				agenda.personalesOrdenadosPorFechaNacimiento(opcion);
-				cd.close();
-				
-			} else if (!resultado.isPresent()) {
-				areaTexto.appendText("La letra no esta en la agenda o no hay contactos personales en ella.");
-				cd.close();
-			}
+				Character opcionElegida = resultado.get();
+				if(agenda.contieneLetra(opcionElegida)) {
+					areaTexto.appendText(agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida).toString());
+					cd.close();
+				}
+				else {
+						areaTexto.setText("No existe ningun personal con esa letra.");
+					}
+				}
 		}
-		// a completar
 
 	}
 
@@ -269,58 +269,63 @@ public class GuiAgenda extends Application {
 		clear();
 		// a completar
 		
+		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
+				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
 		
-		ChoiceDialog<String> c = new ChoiceDialog("A", abecedario);
-
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 
 		} else {
+			ChoiceDialog<Character> c = new ChoiceDialog(abecedario3[0], abecedario3);
 			c.setTitle("Selector de letra");
 			c.setHeaderText(null);
 			c.setContentText("Eliga la opcion: ");
-
-			Optional<String> resultado = c.showAndWait();
+			
+			Optional<Character> resultado = c.showAndWait();
 
 			if (resultado.isPresent()) {
-				String opcionElegida = resultado.get();
-				char opcion = opcionElegida.charAt(0);
-				areaTexto.appendText(agenda.personalesEnLetra(opcion).toString());
-				c.close();
-			}
-			else{
-				areaTexto.appendText("La letra no esta en la agenda.");
-				c.close();
+				Character opcionElegida = resultado.get();
+				if(agenda.contieneLetra(opcionElegida)) {
+						areaTexto.appendText(agenda.personalesEnLetra(opcionElegida).toString());
+						c.close();
+				}
+				else {
+					areaTexto.setText("No hay ningun contacto con esta letra.");
+					c.close();
+				}
+				
 			}
 		}
 	}
 
 	private void contactosEnLetra(char letra) {
 		clear();
-		// a completar
 		
-		ChoiceDialog<String> cd = new ChoiceDialog("A", abecedario);
+		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
+				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
 
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 
 		} else {
+			
+			ChoiceDialog<Character> cd = new ChoiceDialog(abecedario3[0], abecedario3);
 			cd.setTitle("Selector de letra");
 			cd.setHeaderText(null);
 			cd.setContentText("Eliga la opcion: ");
 
-			Optional<String> resultado = cd.showAndWait();
-
+			Optional<Character> resultado = cd.showAndWait();
+			
 			if (resultado.isPresent()) {
-				String opcionElegida = resultado.get();
-				char opcion = opcionElegida.charAt(0);
-				areaTexto.appendText(agenda.contactosEnLetra(opcion).toString());
-				cd.close();
-			}
-
-			else if (!resultado.isPresent()) {
-				areaTexto.appendText("La letra no esta en la agenda.");
-				cd.close();
+				Character opcionElegida = resultado.get();
+				if(agenda.contieneLetra(opcionElegida)) {
+					areaTexto.appendText(agenda.contactosEnLetra(opcionElegida).toString());
+					cd.close();
+				}
+				
+				else {
+					areaTexto.setText("No existe ningun contacto con esta letra");
+				}
 			}
 		}
 	}

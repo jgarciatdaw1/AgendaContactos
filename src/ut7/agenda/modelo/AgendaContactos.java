@@ -108,6 +108,17 @@ public class AgendaContactos {
 		return devuelve;
 	}
 
+	//Metodo privado creado para la interfaz para ver si existen contactos con esa letra. FALTA COMENTAR BIEN.
+	public boolean contieneLetra(Character c) {
+		if(agenda.containsKey(c)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
 	/**
 	 * Este metodo devuelve un List de Personal de tods los Personales a los que hay que felicitar.
 	 * @return Una Lista de Personales a los que hay que felicitar.
