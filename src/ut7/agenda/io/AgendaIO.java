@@ -28,7 +28,10 @@ public class AgendaIO {
 	 */
 	public static int importar(AgendaContactos agenda, String ruta) {
 		int contador = 0;
-		Scanner sc = new Scanner(AgendaIO.class.getClassLoader().getResourceAsStream(ruta));
+		Scanner sc;
+		try {
+			sc = new Scanner(new File(ruta));
+		
 		while (sc.hasNextLine()) {
 
 			try {
@@ -40,6 +43,9 @@ public class AgendaIO {
 				contador++;
 				System.out.println("Error al parsear un contacto");
 			}
+		}
+		} catch (IOException e) {
+			
 		}
 		return contador;
 

@@ -1,5 +1,6 @@
 package ut8.agenda.interfaz;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Optional;
 
@@ -9,16 +10,21 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import ut7.agenda.io.AgendaIO;
 import ut7.agenda.modelo.AgendaContactos;
 
 public class GuiAgenda extends Application {
@@ -126,7 +132,8 @@ public class GuiAgenda extends Application {
 		btnPersonalesOrdenadosPorFecha.setOnMouseClicked(e -> personalesOrdenadosPorFecha());
 		btnPersonalesEnLetra.setOnMouseClicked(f -> contactosPersonalesEnLetra());
 		btnListar.setOnMouseClicked(g -> listar());
-
+		itemFelicitar.setOnAction(h -> felicitar());
+		
 		
 		btnClear = new Button("Clear");
 		btnClear.setOnAction(e -> clear());
@@ -156,23 +163,62 @@ public class GuiAgenda extends Application {
 
 	private MenuBar crearBarraMenu() {
 		MenuBar barra = new MenuBar();
-		/*
-		 * Menu menu1 = new Menu("Archivo"); Menu menu2 = new Menu("Operaciones"); Menu
-		 * menu3 = new Menu("Help");
-		 * 
-		 * barra.getMenus().addAll(menu1, menu2, menu3);
-		 * 
-		 * menu1.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
-		 * menu2.getItems().addAll(itemBuscar, itemFelicitar);
-		 * menu3.getItems().addAll(itemAbout);
-		 */
+		
+		Menu archivo = new Menu();
+		archivo.setText("Archivo");
+		itemFelicitar = new MenuItem();
+		
+		itemImportar = new MenuItem("Importar agenda");
+		itemImportar.setAccelerator(KeyCombination.keyCombination("Ctrl+I"));
+		itemImportar.setOnAction(e -> importarAgenda());
+		
+		itemExportarPersonales = new MenuItem("Exportar Personales");
+		itemExportarPersonales.setDisable(true);
+		itemExportarPersonales.setAccelerator(KeyCombination.keyCombination("Ctrl+E"));
+		itemExportarPersonales.setOnAction(f -> exportarPersonales());
+		
+		itemSalir = new MenuItem("Salir");
+		itemSalir.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+		itemSalir.setOnAction(g -> salir());
+		archivo.getItems().addAll(itemImportar, itemExportarPersonales, itemSalir);
+		
+		
+		Menu operaciones = new Menu();
+		operaciones.setText("Operaciones");
+		itemBuscar = new MenuItem("Buscar");
+		itemBuscar.setAccelerator(KeyCombination.keyCombination("Ctrl+B"));
+		itemBuscar.setOnAction(j -> buscar());
+		itemFelicitar = new MenuItem("Felicitar");
+		itemFelicitar.setAccelerator(KeyCombination.keyCombination("Ctrl+F"));
+		itemFelicitar.setOnAction(a -> felicitar());
+		operaciones.getItems().addAll(itemBuscar, itemFelicitar);
+		
+		
+		Menu help = new Menu();
+		help.setText("Help");
+		itemAbout = new MenuItem("About");
+		itemAbout.setAccelerator(KeyCombination.keyCombination("Ctrl+A"));
+		itemAbout.setOnAction(h -> about());
+		help.getItems().add(itemAbout);
+		
+		barra.getMenus().addAll(archivo, operaciones, help);
 		
 		return barra;
 	}
 
 	private void importarAgenda() {
 		// a completar
-
+		Stage s = new Stage();
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Abrir fichero csv");
+		File f = fc.showOpenDialog(s);
+		System.out.println(f.getPath());
+		AgendaIO.importar(agenda, f.getPath());
+		
+		
+		//Al final deshabilitar importar y activar exportar
+		itemImportar.setDisable(true);
+		itemExportarPersonales.setDisable(false);
 	}
 
 	private void exportarPersonales() {
@@ -192,12 +238,7 @@ public class GuiAgenda extends Application {
 	private void personalesOrdenadosPorFecha() {
 		clear();
 
-		// CAMBIAR NAIARA
-		itemImportar = new MenuItem();
-
-		
-		
-		ChoiceDialog<String> cd = new ChoiceDialog(abecedario[0], abecedario);
+		ChoiceDialog<String> cd = new ChoiceDialog("A", abecedario);
 
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
@@ -228,9 +269,8 @@ public class GuiAgenda extends Application {
 		clear();
 		// a completar
 		
-		itemImportar = new MenuItem();
 		
-		ChoiceDialog<String> c = new ChoiceDialog(abecedario[0], abecedario);
+		ChoiceDialog<String> c = new ChoiceDialog("A", abecedario);
 
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
@@ -258,9 +298,8 @@ public class GuiAgenda extends Application {
 	private void contactosEnLetra(char letra) {
 		clear();
 		// a completar
-		itemImportar = new MenuItem();
 		
-		ChoiceDialog<String> cd = new ChoiceDialog(abecedario[0], abecedario);
+		ChoiceDialog<String> cd = new ChoiceDialog("A", abecedario);
 
 		if (!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
