@@ -2,7 +2,6 @@ package ut8.agenda.interfaz;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -11,8 +10,10 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -23,10 +24,10 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import ut7.agenda.io.AgendaIO;
 import ut7.agenda.modelo.AgendaContactos;
 import ut7.agenda.modelo.Contacto;
@@ -58,7 +59,7 @@ public class GuiAgenda extends Application {
 	private Button btnSalir;
 
 	private char[] abecedario = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
-			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
+			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
 	@Override
 	public void start(Stage stage) {
@@ -109,11 +110,14 @@ public class GuiAgenda extends Application {
 		ToggleGroup group = new ToggleGroup();
 
 		rbtListarTodo = new RadioButton("Listar toda la agenda");
+
 		rbtListarTodo.setToggleGroup(group);
+		rbtListarTodo.setOnAction(e -> listar());
 		rbtListarTodo.setSelected(true);
 		rbtListarTodo.getStyleClass().add("radio-button");
 
 		rbtListarSoloNumero = new RadioButton("Listar nº contactos");
+		rbtListarSoloNumero.setOnAction(e -> totalContactos());
 		rbtListarSoloNumero.setToggleGroup(group);
 		rbtListarSoloNumero.getStyleClass().add("radio-button");
 
@@ -158,9 +162,35 @@ public class GuiAgenda extends Application {
 	}
 
 	private GridPane crearPanelLetras() {
-		// a completar
 		GridPane panel = new GridPane();
 
+		panel.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+		panel.setPadding(new Insets(10));
+		panel.setHgap(5);
+		panel.setVgap(5);
+
+		int pos = 0;
+
+		for (int i = 0; i < abecedario.length; i++) {
+			String letraString = String.valueOf(abecedario[i]);
+			char letraChar = abecedario[i];
+
+			Button b = new Button(letraString);
+			b.setOnAction(e -> contactosEnLetra(letraChar));
+
+			b.getStyleClass().add("botonletra");
+			b.setMaxSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+
+			GridPane.setHgrow(b, Priority.ALWAYS);
+			GridPane.setVgrow(b, Priority.ALWAYS);
+
+			if (i >= 14) {
+				panel.add(b, pos, 1);
+				pos++;
+			} else {
+				panel.add(b, i, 0);
+			}
+		}
 		return panel;
 	}
 
@@ -227,12 +257,21 @@ public class GuiAgenda extends Application {
 		AgendaIO.exportarPersonales(agenda, f.getPath());
 	}
 
-	/**
-	 *  
-	 */
 	private void listar() {
 		clear();
-		// a completar
+		if (!itemImportar.isDisable()) {
+			areaTexto.setText("Importa primero la agenda.");
+		} else {
+			areaTexto.appendText("AGENDA DE CONTACTOS\n\n" + agenda.toString());
+		}
+	}
+
+	private void totalContactos() {
+		if (!itemImportar.isDisable()) {
+			areaTexto.setText("Importa primero la agenda.");
+		} else {
+			areaTexto.setText("Total contactos en la agenda:\t " + String.valueOf(agenda.totalContactos()));
+		}
 
 	}
 
@@ -242,7 +281,7 @@ public class GuiAgenda extends Application {
 				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
 
 		if (!itemImportar.isDisable()) {
-			areaTexto.appendText("Importa primero la agenda.");
+			areaTexto.setText("Importa primero la agenda.");
 
 		} else {
 			ChoiceDialog<Character> cd = new ChoiceDialog(abecedario3[0], abecedario3);
@@ -281,7 +320,7 @@ public class GuiAgenda extends Application {
 				'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'X', 'Z' };
 
 		if (!itemImportar.isDisable()) {
-			areaTexto.appendText("Importa primero la agenda.");
+			areaTexto.setText("Importa primero la agenda.");
 
 		} else {
 			ChoiceDialog<Character> c = new ChoiceDialog(abecedario3[0], abecedario3);
@@ -392,8 +431,16 @@ public class GuiAgenda extends Application {
 	}
 
 	private void about() {
-		// a completar
+		Alert a = new Alert(Alert.AlertType.INFORMATION);
 
+		a.setTitle("About Agenda de Contactos");
+		a.setHeaderText(null);
+		a.setContentText("Mi agenda de \ncontactos");
+
+		DialogPane dp = a.getDialogPane();
+		dp.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+		a.showAndWait();
 	}
 
 	private void clear() {
