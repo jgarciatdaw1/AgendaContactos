@@ -212,9 +212,8 @@ public class GuiAgenda extends Application {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Abrir fichero csv");
 		File f = fc.showOpenDialog(s);
-		System.out.println(f.getPath());
-		AgendaIO.importar(agenda, f.getPath());
-		
+		int errores = AgendaIO.importar(agenda, f.getPath());
+		areaTexto.appendText("No se han podido importar " + errores + " contactos.");
 		
 		//Al final deshabilitar importar y activar exportar
 		itemImportar.setDisable(true);
@@ -223,7 +222,7 @@ public class GuiAgenda extends Application {
 
 	private void exportarPersonales() {
 		// a completar
-
+		
 	}
 
 	/**
