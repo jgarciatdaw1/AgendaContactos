@@ -1,6 +1,7 @@
 package ut8.agenda.interfaz;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import ut7.agenda.io.AgendaIO;
 import ut7.agenda.modelo.AgendaContactos;
+import ut7.agenda.modelo.Personal;
 
 public class GuiAgenda extends Application {
 	private AgendaContactos agenda;
@@ -255,7 +257,13 @@ public class GuiAgenda extends Application {
 			if (resultado.isPresent()) {
 				Character opcionElegida = resultado.get();
 				if(agenda.contieneLetra(opcionElegida)) {
-					areaTexto.appendText(agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida).toString());
+					if(agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida).isEmpty()) {
+						areaTexto.setText("No hay contactos.");
+					}else {
+						for(Personal p :agenda.personalesOrdenadosPorFechaNacimiento(opcionElegida)) {
+							areaTexto.appendText(p.toString() + "\n");
+						}
+					}
 					cd.close();
 				}
 				else {
@@ -333,17 +341,21 @@ public class GuiAgenda extends Application {
 
 	private void felicitar() {
 		clear();
-		// a completar
-		itemImportar = new MenuItem();
 		
 		if(!itemImportar.isDisable()) {
 			areaTexto.appendText("Importa primero la agenda.");
 		}
 		
 		else {
-			Date fecha = new Date();
-			areaTexto.appendText("Hoy es el " + fecha.getDay() + " de " + fecha.getMonth() + " del " + fecha.getYear());
-			areaTexto.appendText(agenda.felicitar().toString());
+			LocalDate lc = LocalDate.now();
+			areaTexto.appendText("Hoy es el " + lc.getDayOfMonth() + " del " + lc.getMonthValue() + " de " + lc.getYear() + "\n");
+			
+			if(!agenda.felicitar().isEmpty()) {
+				areaTexto.appendText(agenda.felicitar().toString());
+			}
+			else {
+				areaTexto.appendText("Hoy no cumple años ningun contacto.");
+			}
 		}
 		
 	}
