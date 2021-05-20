@@ -97,6 +97,7 @@ public class GuiAgenda extends Application {
 		txtBuscar = new TextField();
 		txtBuscar.setPromptText("Buscar");
 		txtBuscar.setMinHeight(40);
+		txtBuscar.setOnAction(n -> buscar());
 		VBox.setMargin(txtBuscar, new Insets(0, 0, 40, 0));
 		txtBuscar.getStyleClass().add("text-field");
 
@@ -349,10 +350,18 @@ public class GuiAgenda extends Application {
 
 	private void buscar() {
 		clear();
-		// a completar
-
+		
+		String texto = txtBuscar.getText();
+		
+		if(agenda.buscarContactos(texto).isEmpty()) {
+			areaTexto.appendText("No existe el contacto que buscas.");
+		}else if(texto.equals("")) {
+			areaTexto.setText("No has introduciodo nada para buscar.");
+		}else if(!agenda.buscarContactos(texto).isEmpty()){
+			areaTexto.appendText(agenda.buscarContactos(texto).toString());
+		}
+		
 		cogerFoco();
-
 	}
 
 	private void about() {
