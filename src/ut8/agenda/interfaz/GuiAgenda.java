@@ -97,6 +97,12 @@ public class GuiAgenda extends Application {
 		return panel;
 	}
 
+	/*
+	 * Crea el panel de botones de la izquierda y se le asigna a cada boton sus
+	 * respectivos estilos.
+	 * 
+	 * @return Un VBox.
+	 */
 	private VBox crearPanelBotones() {
 		VBox panel = new VBox(10);
 
@@ -161,6 +167,12 @@ public class GuiAgenda extends Application {
 		return panel;
 	}
 
+	/*
+	 * Crea barra con todo el abecedario.
+	 * 
+	 * @return Un GridPane que es la barra.
+	 * 
+	 */
 	private GridPane crearPanelLetras() {
 		GridPane panel = new GridPane();
 
@@ -194,6 +206,12 @@ public class GuiAgenda extends Application {
 		return panel;
 	}
 
+	/*
+	 * Crea la barra de menu.
+	 * 
+	 * @return MenuBar que es la barra del menu.
+	 * 
+	 */
 	private MenuBar crearBarraMenu() {
 		MenuBar barra = new MenuBar();
 
@@ -237,6 +255,12 @@ public class GuiAgenda extends Application {
 		return barra;
 	}
 
+	/*
+	 * Importa la agenda, para eso se abre una ventana, seleccionamos el archivo csv
+	 * a importar y lo importamos. Al importar nos apareceran La cantidad de
+	 * contactos que no se han podido importar.
+	 * 
+	 */
 	private void importarAgenda() {
 		Stage s = new Stage();
 		FileChooser fc = new FileChooser();
@@ -249,6 +273,10 @@ public class GuiAgenda extends Application {
 		itemExportarPersonales.setDisable(false);
 	}
 
+	/*
+	 * Exporta la agenda con todos los personales. Al exportar se nos abre una
+	 * ventana para seleccionar la ruta del destino y el nombre del archivo.
+	 */
 	private void exportarPersonales() {
 		Stage s = new Stage();
 		FileChooser fc = new FileChooser();
@@ -257,6 +285,10 @@ public class GuiAgenda extends Application {
 		AgendaIO.exportarPersonales(agenda, f.getPath());
 	}
 
+	/*
+	 * Lista todos los contactos, en caso de que la agenda no este importada nos
+	 * lanzara un mensaje.
+	 */
 	private void listar() {
 		clear();
 		if (!itemImportar.isDisable()) {
@@ -266,6 +298,11 @@ public class GuiAgenda extends Application {
 		}
 	}
 
+	/*
+	 * Nos devuelve la cantidad de contactos que hay en la agenda, si la agenda no
+	 * esta importada nos pide por un mensaje que lo importemos.
+	 * 
+	 */
 	private void totalContactos() {
 		if (!itemImportar.isDisable()) {
 			areaTexto.setText("Importa primero la agenda.");
@@ -275,6 +312,14 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/*
+	 * Sera necesario importar la agenda primero, sino, nos lanza un mensaje
+	 * indicandonos que se debe de importar la agenda. Despues, se nos abre una
+	 * ventana y seleccionamos la letra de los contactos que queremos sacar y nos
+	 * imprime los contactos personales ordenados por la fecha por la letra
+	 * especificada. En caso de que no haya ningun contacto nos lanza otro mensaje.
+	 * 
+	 */
 	private void personalesOrdenadosPorFecha() {
 		clear();
 		Character[] abecedario3 = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P',
@@ -313,6 +358,14 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/*
+	 * Sera necesario importar la agenda primero, sino, nos lanza un mensaje
+	 * indicandonos que se debe de importar la agenda. Despues, se nos abre una
+	 * ventana y seleccionamos la letra de los contactos que queremos sacar y nos
+	 * imprime los contactos personales por la letra especificada. En caso de que no
+	 * haya ningun contacto nos lanza otro mensaje.
+	 * 
+	 */
 	private void contactosPersonalesEnLetra() {
 		clear();
 
@@ -352,6 +405,17 @@ public class GuiAgenda extends Application {
 		}
 	}
 
+	/*
+	 * Sera necesario importar la agenda primero, sino, nos lanza un mensaje
+	 * indicandonos que se debe de importar la agenda. Despues, se nos abre una
+	 * ventana y seleccionamos la letra de los contactos que queremos sacar y nos
+	 * imprime primero una letra con la cantidad de contactos que hay en la letra
+	 * especificada y despues una lista de todos los contactos en esa letra. En caso
+	 * de que no haya ningun contacto nos lanza otro mensaje.
+	 * 
+	 * @param La letra por la que se quieren buscar los contactos.
+	 * 
+	 */
 	private void contactosEnLetra(char letra) {
 		clear();
 
@@ -393,6 +457,12 @@ public class GuiAgenda extends Application {
 		}
 	}
 
+	/*
+	 * Se debe de importar primero la agenda, en caso de no tenerlo importado nos
+	 * lanza un mensaje. Despues, nos saca la fecha actual y todos los contactos a
+	 * los que hay que felicitar.
+	 * 
+	 */
 	private void felicitar() {
 		clear();
 
@@ -414,6 +484,10 @@ public class GuiAgenda extends Application {
 
 	}
 
+	/*
+	 * Se busca el contacto por la letra introducida en el TextField.
+	 * 
+	 */
 	private void buscar() {
 		clear();
 
@@ -430,6 +504,10 @@ public class GuiAgenda extends Application {
 		cogerFoco();
 	}
 
+	/*
+	 * Nos saca una ventana personalizada.
+	 * 
+	 */
 	private void about() {
 		Alert a = new Alert(Alert.AlertType.INFORMATION);
 
@@ -443,10 +521,18 @@ public class GuiAgenda extends Application {
 		a.showAndWait();
 	}
 
+	/*
+	 * Nos limpia la pantalla del TextArea
+	 * 
+	 */
 	private void clear() {
 		areaTexto.setText("");
 	}
 
+	/*
+	 * Cierra la aplicacion AgendaContactos.
+	 * 
+	 */
 	private void salir() {
 		Platform.exit();
 	}

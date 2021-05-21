@@ -1,4 +1,5 @@
 package ut7.agenda.modelo;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,9 +10,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * Un objeto de esta clase, modela una agenda para guardar contactos profesionales y personales, 
- * permitiendote realizar diversas funciones con ellos.<br><br>
- * Los contactos se guardan en orden alfabético por primer apellido y no se permiten duplicados.
+ * Un objeto de esta clase, modela una agenda para guardar contactos
+ * profesionales y personales, permitiendote realizar diversas funciones con
+ * ellos.<br>
+ * <br>
+ * Los contactos se guardan en orden alfabético por primer apellido y no se
+ * permiten duplicados.
  * 
  * @author Iker Iparraguirre, Jon García, Naiara Borrega
  * 
@@ -24,10 +28,11 @@ public class AgendaContactos {
 	}
 
 	/**
-	 * Añade un nuevo contacto a la lista de contactos.
-	 * Dicho contacto será añadido a la agenda en la letra que le corresponda.<br><br>
-	 * En caso de que la letra no exista, se creará una nueva letra para posteriormente
-	 * insertar el nuevo contacto especificado.
+	 * Añade un nuevo contacto a la lista de contactos. Dicho contacto será añadido
+	 * a la agenda en la letra que le corresponda.<br>
+	 * <br>
+	 * En caso de que la letra no exista, se creará una nueva letra para
+	 * posteriormente insertar el nuevo contacto especificado.
 	 * 
 	 * @param c - Contacto a añadir.
 	 */
@@ -43,7 +48,8 @@ public class AgendaContactos {
 	}
 
 	/**
-	 * Este metodo devuelve un Set de los contactos que esten en la letra que le pidas.
+	 * Este metodo devuelve un Set de los contactos que esten en la letra que le
+	 * pidas.
 	 * 
 	 * @param letra - Letra en la que se quiere buscar.
 	 * @return Set
@@ -64,15 +70,16 @@ public class AgendaContactos {
 		}
 		return contador;
 	}
-	
+
 	/**
-	 * Busca un contacto en la agenda de contactos mediante una serie de
-	 * caractéres especificados.
+	 * Busca un contacto en la agenda de contactos mediante una serie de caractéres
+	 * especificados.
 	 * 
 	 * 
 	 * @param texto - Texto para buscar
-	 * @return Una lista con todas las coincidencias encontradas en base al texto introducido 
-	 * 		   en parámetros. Si no se encuentra ninguna coincidencia, se devolverá una lista vacia.
+	 * @return Una lista con todas las coincidencias encontradas en base al texto
+	 *         introducido en parámetros. Si no se encuentra ninguna coincidencia,
+	 *         se devolverá una lista vacia.
 	 */
 	public List<Contacto> buscarContactos(String texto) {
 		List<Contacto> temp = new ArrayList<>();
@@ -88,13 +95,15 @@ public class AgendaContactos {
 
 	/**
 	 * Este metodo devuelve un List de todos los Personales que tengan la letra.
+	 * 
 	 * @param La letra para buscar los personales (la clave del TreeMap).
-	 * @return Una collecion List de todos los personales que tengan esa letra, si no hay ninguno, da error de NullPointerException.<br>
+	 * @return Una collecion List de todos los personales que tengan esa letra, si
+	 *         no hay ninguno, da error de NullPointerException.<br>
 	 */
 	public List<Personal> personalesEnLetra(char letra) {
 		List<Personal> devuelve = new ArrayList<>();
 
-		if(agenda.get(letra) == null) {
+		if (agenda.get(letra) == null) {
 			return null;
 		}
 		for (Contacto contacto : agenda.get(letra)) {
@@ -104,23 +113,30 @@ public class AgendaContactos {
 			}
 
 		}
-		
+
 		return devuelve;
 	}
 
-	//Metodo privado creado para la interfaz para ver si existen contactos con esa letra.
+	/*
+	 * Este metodo devuelve true si la agenda contiene la letra especificada y false
+	 * en caso contrario.
+	 * 
+	 * @param El caracter.
+	 * 
+	 * @return Un boolean
+	 */
 	public boolean contieneLetra(Character c) {
-		if(agenda.containsKey(c)) {
+		if (agenda.containsKey(c)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
-	
+
 	/**
-	 * Este metodo devuelve un List de Personal de tods los Personales a los que hay que felicitar.
+	 * Este metodo devuelve un List de Personal de tods los Personales a los que hay
+	 * que felicitar.
+	 * 
 	 * @return Una Lista de Personales a los que hay que felicitar.
 	 */
 	public List<Personal> felicitar() {
@@ -166,7 +182,8 @@ public class AgendaContactos {
 	}
 
 	/**
-	 * Dada una letra devuelve un List ordenado por la fecha de nacimiento de todos los Personales que empiecen por esa letra<br>
+	 * Dada una letra devuelve un List ordenado por la fecha de nacimiento de todos
+	 * los Personales que empiecen por esa letra<br>
 	 * 
 	 * @param Un char de la primera letra del apellido del Personal.
 	 * @return Un List de Personales ordenados por la fecha de nacimiento.
@@ -190,8 +207,8 @@ public class AgendaContactos {
 
 	/**
 	 * Representación textual de la agenda.<br>
-	 * Se mostrarán todas las letras ordenadas alfabéticamente que contienen contactos
-	 * en la agenda.
+	 * Se mostrarán todas las letras ordenadas alfabéticamente que contienen
+	 * contactos en la agenda.
 	 * 
 	 * 
 	 * @return String con la representación textual de la agenda
